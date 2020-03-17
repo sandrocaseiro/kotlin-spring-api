@@ -1,0 +1,91 @@
+cors:
+  enabled: false
+  allowed-headers: "*"
+  allowed-methods: GET, POST, PUT, DELETE, OPTIONS
+  allowed-origins: "*"
+  exposed-headers: Content-Disposition, Content-Length, Content-Type
+
+endpoints:
+  api1:
+    base-url: http://localhost:8080/
+    password: 1234
+    username: user1@mail.com
+
+feign:
+  client.config.default:
+    connectTimeout: 5000
+    loggerLevel: basic
+    readTimeout: 5000
+  compression:
+    request.enabled: true
+    response.enabled: true
+  httpclient.enabled: false
+  okhttp.enabled: true
+
+info:
+  app:
+    name: 'api-template'
+    description: 'api-template'
+    version: 'xxx'
+
+jwt:
+  expiration: 18000000
+  header: Authorization
+  refresh-expiration: 18000000000000
+  secret: "!$V?GLhtdE}HgLBkYnRw%YfJ$dM7,DP$6;E3T_?V28cU7D}Vwr;!TP4Nj.da"
+  tokenPrefix: Bearer
+
+management:
+  endpoint:
+    info.enabled: true
+  endpoints:
+    enabled-by-default: false
+    web.base-path: /_monitor
+
+server:
+  compression:
+    enabled: true
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+  error:
+    whitelabel:
+      enabled: false
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
+  application:
+    name: apitemplate
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+  jmx:
+    enabled: false
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.Oracle12cDialect
+        proc:
+          param_null_passing: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+          time_zone: UTC
+  liquibase:
+    enabled: false
+  output:
+    ansi:
+      enabled: ALWAYS
+  profiles:
+    active: test
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 4MB
+      max-request-size: 6MB

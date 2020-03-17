@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jboss-deployment-structure xmlns="urn:jboss:deployment-structure:1.1">
+    <deployment>
+        <exclusions>
+            <module name="com.sun.istack.istack-commons-runtime"/>
+            <module name="com.fasterxml.jackson.datatype.jackson-datatype-jdk8"/>
+            <module name="com.fasterxml.classmate"/>
+            <module name="org.apache.logging.log4j.log4j-api" />
+            <module name="jakarta.xml.bind.jakarta.xml.bind-api" />
+            <module name="com.fasterxml.jackson.module.jackson-module-parameter-name" />
+            <module name="com.fasterxml.jackson.datatype.jackson-datatype-jsr310"/>
+            <module name="org.glassfish.jaxb.jaxb-runtime" />
+            <module name="org.glassfish.jaxb.txw2" />
+            <module name="org.jvnet.staxex.stax-ex" />
+            <module name="com.sun.xml.fastinfoset.FastInfoSet" />
+            <module name="com.fasterxml.jackson.core.jackson-core" />
+            <module name="net.bytebuddy.byte-buddy" />
+            <module name="com.fasterxml.jackson.core.jackson-databind" />
+            <module name="org.projectlombok.lombok" />
+            <module name="com.fasterxml.jackson.core.jackson-annotations" />
+            <module name="com.fasterxml.jackson.jaxrs.jackson-jaxrs-json-provider" />
+            <module name="org.jboss.resteasy.resteasy-jackson2-provider" />
+        </exclusions>
+    </deployment>
+</jboss-deployment-structure>

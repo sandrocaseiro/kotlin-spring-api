@@ -1,0 +1,23 @@
+logging:
+  level:
+    root: OFF
+
+spring:
+  datasource:
+    url: 'jdbc:h2:mem:testdb;MODE=Oracle;INIT=CREATE SCHEMA IF NOT EXISTS TEMPLATE\;SET SCHEMA_SEARCH_PATH TEMPLATE;'
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: sa
+  h2.console.enabled: true
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        default_schema: template
+        enable_lazy_load_no_trans: true
+  liquibase:
+    change-log: classpath:changelog-test.xml
+    enabled: true
+    liquibase-schema: template
+  main:
+    banner-mode: OFF

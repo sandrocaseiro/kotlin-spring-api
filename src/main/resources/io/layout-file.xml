@@ -1,0 +1,132 @@
+<beanio xmlns="http://www.beanio.org/2012/03">
+    <typeHandler type="java.math.BigDecimal" class="com.sandrocaseiro.apitemplate.handlers.io.BigDecimalTypeHandler">
+        <property name="decimals" value="2" />
+    </typeHandler>
+    <typeHandler name="localDate" type="java.time.LocalDate" class="com.sandrocaseiro.apitemplate.handlers.io.LocalDateTypeHandler" />
+    <typeHandler name="localTime" type="java.time.LocalTime" class="com.sandrocaseiro.apitemplate.handlers.io.LocalTimeTypeHandler" />
+    <stream name="extrato-arquivo" format="fixedlength" minOccurs="1" maxOccurs="unbounded" strict="true">
+        <group name="extrato" minOccurs="1" maxOccurs="1" class="com.sandrocaseiro.apitemplate.models.io.IArquivoExtrato">
+            <record name="header" order="1" minOccurs="1" maxOccurs="1" class="com.sandrocaseiro.apitemplate.models.io.IArquivoExtratoHeader">
+                <field name="codBanco" type="int" length="3" />
+                <field name="lote" type="int" length="4" padding="0" />
+                <field name="tipoRegistro" type="int" rid="true" length="1" literal="0" />
+                <field name="cnab" type="string" length="9" padding=" " />
+                <field name="tipoInscricao" type="int" length="1" />
+                <field name="nroInscricao" type="long" length="14" />
+                <field name="codConvenio" type="string" length="20" padding=" " justify="right" />
+                <field name="nroAgencia" type="int" length="5" padding="0" justify="right" />
+                <field name="digitoAgencia" type="string" length="1" padding=" " lazy="true" />
+                <field name="nroConta" type="long" length="12" padding="0" justify="right" />
+                <field name="digitoConta" type="string" length="1" padding=" " lazy="true" />
+                <field name="digitoAgenciaConta" type="string" length="1" padding=" " />
+                <field name="nomeEmpresa" type="string" length="30" padding=" " />
+                <field name="nomeBanco" type="string" length="30" />
+                <field name="cnab2" type="string" length="10" padding=" " />
+                <field name="codRemessaRetorno" type="int" length="1" />
+                <field name="dataGeracao" typeHandler="localDate" format="ddMMyyyy" length="8" />
+                <field name="horaGeracao" typeHandler="localTime" format="HHmmss" length="6" />
+                <field name="sequenciaNSA" type="int" length="6" />
+                <field name="nroVersaoLayout" type="int" length="3" />
+                <field name="densidade" type="int" length="5" />
+                <field name="reservadoBanco" type="string" length="20" />
+                <field name="reservadoEmpresa" type="string" length="20" />
+                <field name="cnab3" type="string" length="29" padding=" " />
+            </record>
+            <group name="lotes" order="2" minOccurs="1" maxOccurs="unbounded" class="com.sandrocaseiro.apitemplate.models.io.IArquivoExtratoLote" collection="list">
+                <record name="headerLote" order="3" minOccurs="1" maxOccurs="1" class="com.sandrocaseiro.apitemplate.models.io.IArquivoExtratoLoteHeader">
+                    <field name="codBanco" type="int" length="3" />
+                    <field name="lote" type="int" length="4" padding="0" />
+                    <field name="tipoRegistro" type="int" rid="true" length="1" literal="1" />
+                    <field name="tipoOperacao" type="string" length="1" literal="E" />
+                    <field name="tipoServico" type="int" length="2" literal="04" />
+                    <field name="formaLancamento" type="int" length="2" />
+                    <field name="layoutLote" type="int" length="3" />
+                    <field name="cnab" type="string" length="1" padding=" " />
+                    <field name="tipoInscricao" type="int" length="1" />
+                    <field name="nroInscricao" type="long" length="14" />
+                    <field name="codConvenio" type="string" length="20" padding=" " justify="right" />
+                    <field name="nroAgencia" type="int" length="5" padding="0" justify="right" />
+                    <field name="digitoAgencia" type="string" length="1" />
+                    <field name="nroConta" type="string" length="12" padding="0" justify="right" />
+                    <field name="digitoConta" type="string" length="1" />
+                    <field name="digitoAgenciaConta" type="string" length="1" />
+                    <field name="nomeEmpresa" type="string" length="30" padding=" " />
+                    <field name="cnab2" type="string" length="40" padding=" " />
+                    <field name="dtaSaldo" typeHandler="localDate" format="ddMMyyyy" length="8" />
+                    <field name="vlrSaldo" type="bigdecimal" length="18" />
+                    <field name="situacaoSaldo" type="com.sandrocaseiro.apitemplate.models.io.enums.ISituacaoSaldo" length="1" />
+                    <field name="posicaoSaldo" type="com.sandrocaseiro.apitemplate.models.io.enums.IPosicaoSaldo" length="1" />
+                    <field name="moeda" type="string" length="3" />
+                    <field name="sequencia" type="int" length="5" />
+                    <field name="cnab3" type="string" length="62" padding=" " />
+                </record>
+                <record name="detalhes" order="4" minOccurs="0" maxOccurs="unbounded" class="com.sandrocaseiro.apitemplate.models.io.IArquivoExtratoLoteDetalhe" collection="list">
+                    <field name="codBanco" type="int" length="3" />
+                    <field name="lote" type="int" length="4" padding="0" />
+                    <field name="tipoRegistro" type="int" rid="true" length="1" literal="3" />
+                    <field name="sequencia" type="int" length="5" />
+                    <field name="segmento" type="string" length="1" literal="E" />
+                    <field name="cnab" type="string" length="3" padding=" " />
+                    <field name="tipoInscricao" type="int" length="1" />
+                    <field name="nroInscricao" type="long" length="14" />
+                    <field name="codConvenio" type="string" length="20" padding=" " justify="right" />
+                    <field name="nroAgencia" type="int" length="5" padding="0" justify="right" />
+                    <field name="digitoAgencia" type="string" length="1" padding=" " />
+                    <field name="nroConta" type="long" length="12" padding="0" justify="right" />
+                    <field name="digitoConta" type="string" length="1" />
+                    <field name="digitoAgenciaConta" type="string" length="1" padding=" " />
+                    <field name="nomeEmpresa" type="string" length="30" padding=" " />
+                    <field name="cnab2" type="string" length="6" padding=" " />
+                    <field name="natureza" type="string" length="3" />
+                    <field name="tipoComplemento" type="int" length="2" />
+                    <field name="complemento" type="string" length="20" />
+                    <field name="cpmf" type="string" length="1" />
+                    <field name="dtaContabil" typeHandler="localDate" format="ddMMyyyy" length="8" padding="0" />
+                    <field name="dtaLancamento" typeHandler="localDate" format="ddMMyyyy" length="8" />
+                    <field name="vlrLancamento" type="bigdecimal" length="18" />
+                    <field name="tipoLancamento" type="string" length="1" />
+                    <field name="categoriaLancamento" type="int" length="3" />
+                    <field name="codHistorico" type="string" length="4" />
+                    <field name="descricaoHistorico" type="string" length="25" padding=" " justify="left" />
+                    <field name="nroDocumento" type="string" length="39" padding=" " />
+                </record>
+                <record name="trailerLote" order="5" minOccurs="1" maxOccurs="1" class="com.sandrocaseiro.apitemplate.models.io.IArquivoExtratoLoteTrailer">
+                    <field name="codBanco" type="int" length="3" />
+                    <field name="lote" type="int" length="4" padding="0" />
+                    <field name="tipoRegistro" type="int" rid="true" length="1" literal="5" />
+                    <field name="cnab" type="string" length="9" padding=" " />
+                    <field name="tipoInscricao" type="int" length="1" />
+                    <field name="nroInscricao" type="long" length="14" />
+                    <field name="codConvenio" type="string" length="20" padding=" " justify="right" />
+                    <field name="nroAgencia" type="int" length="5" padding="0" justify="right" />
+                    <field name="digitoAgencia" type="string" length="1" />
+                    <field name="nroConta" type="long" length="12" padding="0" justify="right" />
+                    <field name="digitoConta" type="string" length="1" />
+                    <field name="digitoAgenciaConta" type="string" length="1" />
+                    <field name="cnab2" type="string" length="16" padding=" " />
+                    <field name="vlrBloqueadoAcima24h" type="bigdecimal" length="18" />
+                    <field name="vlrLimite" type="bigdecimal" length="18" />
+                    <field name="vlrBloqueado24h" type="bigdecimal" length="18" />
+                    <field name="dtaSaldo" typeHandler="localDate" format="ddMMyyyy" length="8" />
+                    <field name="vlrSaldo" type="bigdecimal" length="18" />
+                    <field name="situacaoSaldo" type="com.sandrocaseiro.apitemplate.models.io.enums.ISituacaoSaldo" length="1" />
+                    <field name="posicaoSaldo" type="com.sandrocaseiro.apitemplate.models.io.enums.IPosicaoSaldo" length="1" />
+                    <field name="qtdRegistros" type="int" length="6" padding="0" justify="right" />
+                    <field name="vlrDebitos" type="bigdecimal" length="18" />
+                    <field name="vlrCreditos" type="bigdecimal" length="18" />
+                    <field name="cnab3" type="string" length="28" padding=" " />
+                </record>
+            </group>
+            <record name="trailer" order="6" minOccurs="1" maxOccurs="1" class="com.sandrocaseiro.apitemplate.models.io.IArquivoExtratoTrailer">
+                <field name="codBanco" type="int" length="3" />
+                <field name="lote" type="int" length="4" padding="9" />
+                <field name="tipoRegistro" type="int" rid="true" length="1" literal="9" />
+                <field name="cnab" type="string" length="9" padding=" " />
+                <field name="qtdLotes" type="int" length="6" padding="0" justify="right" />
+                <field name="qtdRegistros" type="int" length="6" padding="0" justify="right" />
+                <field name="qtdContas" type="int" length="6" padding="0" justify="right" />
+                <field name="cnab2" type="string" length="205" padding=" " />
+            </record>
+        </group>
+    </stream>
+</beanio>

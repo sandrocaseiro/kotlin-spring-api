@@ -2,6 +2,7 @@ package com.sandrocaseiro.template.configs
 
 import com.sandrocaseiro.template.filters.JWTAuthenticationFilter
 import com.sandrocaseiro.template.filters.JWTAuthorizationFilter
+import com.sandrocaseiro.template.filters.ServletErrorFilter
 import com.sandrocaseiro.template.properties.CorsProperties
 import com.sandrocaseiro.template.properties.JwtProperties
 import com.sandrocaseiro.template.security.TokenAuthProvider
@@ -19,13 +20,15 @@ import org.springframework.web.cors.CorsConfiguration
 import org.springframework.web.cors.CorsConfigurationSource
 import org.springframework.web.cors.CorsUtils
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource
+import org.springframework.web.filter.CorsFilter
 
 @Configuration
 class SecurityConfig(
     private val jwtProperties: JwtProperties,
     private val jwtAuthService: JwtAuthService,
     private val corsProperties: CorsProperties,
-    private val tokenAuthProvider: TokenAuthProvider
+    private val tokenAuthProvider: TokenAuthProvider,
+    private val errorFilter: ServletErrorFilter
 ) : WebSecurityConfigurerAdapter() {
 
     override fun configure(http: HttpSecurity) {
@@ -49,8 +52,9 @@ class SecurityConfig(
                 .antMatchers(HttpMethod.POST, "/v*/users").permitAll()
                 .anyRequest().authenticated()
             }
-            .addFilter(jwtAuthenticationFilter())
-            .addFilter(jwtAuthorizationFilter())
+            .addFilterBefore(errorFilter, CorsFilter::class.java)
+            .addFilterAfter(jwtAuthenticationFilter(), CorsFilter::class.java)
+            .addFilterAfter(jwtAuthorizationFilter(), CorsFilter::class.java)
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         ;
     }

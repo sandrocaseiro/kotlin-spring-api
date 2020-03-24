@@ -1,0 +1,24 @@
+FROM gradle:jdk8 as builder
+
+WORKDIR /api
+
+COPY . .
+
+RUN gradle clean bootWarProd --rerun-tasks
+
+FROM jboss/wildfly:9.0.2.Final
+
+ARG wildflyUser
+ARG wildflyPassword
+
+COPY docker/contents/wildfly_oracle.sh /opt/jboss/wildfly/oracle.sh
+COPY docker/contents/wildfly_oracle.cli /opt/jboss/wildfly/oracle.cli
+
+RUN /opt/jboss/wildfly/bin/add-user.sh $wildflyUser $wildflyPassword --silent
+
+RUN /opt/jboss/wildfly/oracle.sh
+COPY --from=builder /api/build/libs/*.war /opt/jboss/wildfly/standalone/deployments/api.war
+
+EXPOSE 8080 9990
+
+CMD ["/opt/jboss/wildfly/bin/standalone.sh", "-b", "0.0.0.0", "-bmanagement", "0.0.0.0"]

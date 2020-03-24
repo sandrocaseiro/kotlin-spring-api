@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  api:
+    build:
+      context: ../
+      dockerfile: $PWD/Dockerfile.wildfly
+      args:
+        - wildflyUser=admin
+        - wildflyPassword=1234
+    image: wildfly-api:2.0.1
+    ports:
+      - "33200:8080"
+      - "33201:9990"
+    depends_on: 
+      - "oracle"
+  oracle:
+    build:
+      context: ../
+      dockerfile: $PWD/Dockerfile.oracle
+    image: oracle-template:2.0.1

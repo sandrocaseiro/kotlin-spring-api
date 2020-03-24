@@ -14,6 +14,10 @@ logging:
         web: DEBUG
     com.sandrocaseiro.apitemplate.clients: DEBUG
 
+server:
+  servlet:
+    context-path: /api
+
 spring:
   datasource:
     url: jdbc:oracle:thin:@//localhost:1521/xe

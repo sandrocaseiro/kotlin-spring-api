@@ -85,10 +85,11 @@ dependencies {
         exclude("org.springframework.boot", "spring-boot-starter-tomcat")
     }
 
-    if (gradle.startParameter.taskNames.any { listOf(tasks.bootJar.name, tasks.bootWar.name, tasks.bootRun.name).contains(it) })
-        providedRuntime("org.springframework.boot:spring-boot-starter-undertow")
+    if (gradle.startParameter.taskNames.any { listOf(tasks.bootJar.name, tasks.bootWar.name, tasks.bootRun.name).any { l -> it.startsWith(l) } })
+        providedCompile("org.springframework.boot:spring-boot-starter-undertow")
+    else
+        implementation("org.springframework.boot:spring-boot-starter-undertow")
 
-    implementation("org.springframework.boot:spring-boot-starter-undertow")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -141,7 +142,8 @@ dependencyCheck {
 
 liquibase {
     val props = Properties()
-    val inputStream = FileInputStream("src/main/resources/liquibase.properties")
+
+    val inputStream = FileInputStream("$projectDir/src/main/resources/liquibase.properties")
     props.load(inputStream)
 
     activities.register("main") {
@@ -195,7 +197,7 @@ tasks.register<Copy>("yaml") {
     into("$buildDir/resources/main")
 
     expand(
-        "activeProfile" to ext.get("env"),
+        "activeProfile" to ext["env"],
         "appName" to project.name,
         "appDescription" to project.description,
         "appVersion" to project.version

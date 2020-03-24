@@ -1,0 +1,13 @@
+  
+# Mark the commands below to be run as a batch
+batch
+
+# Add Oracle driver
+module add --name=com.oracle --resources=wildfly/ojdbc8.jar --dependencies=javax.api,javax.transaction.api
+/subsystem=datasources/jdbc-driver=oracle:add(driver-name=oracle,driver-module-name=com.oracle,driver-class-name=oracle.jdbc.driver.OracleDriver)
+
+# Add the datasource
+data-source add --name=TemplateDB --driver-name=oracle --jndi-name=java:/TemplateDB --connection-url=jdbc:oracle:thin:@oracle:1521:xe --user-name=TEMPLATE --password=TEMPLATE --max-pool-size=25
+
+# Execute the batch
+run-batch

@@ -1,0 +1,8 @@
+.devops
+.git
+.idea
+.mvn
+docker
+target
+mvnw*
+*.iml

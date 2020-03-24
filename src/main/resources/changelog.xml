@@ -9,7 +9,7 @@
         <sqlFile path="db/migration/V1__Initial_version.sql" />
         <sqlFile path="db/migration/V1__Procedures.sql" endDelimiter="/" />
         <rollback>
-            <sqlFile path="db/migration/V1__ROLLBACK.sql" />
+            <sqlFile path="db/migration/rollback/V1__ROLLBACK.sql" />
         </rollback>
     </changeSet>
 </databaseChangeLog>

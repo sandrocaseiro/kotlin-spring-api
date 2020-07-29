@@ -31,3 +31,4 @@ out/
 ### VS Code ###
 .vscode/
 target
+src/main/resources/application-local.yml

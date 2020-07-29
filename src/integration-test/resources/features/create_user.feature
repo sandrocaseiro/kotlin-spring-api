@@ -1,46 +1,95 @@
 Feature: Service should provide endpoint to create new users
-  Check if service can create create new users
+  Check if service can create new users
 
-  Scenario: Unauthenticated user can create a user
-    When With content-type: 'application/json'
-    * With payload:
+  Scenario: Cannot create user with null values
+    When I use the payload:
+      """
+      {
+        "name": null,
+        "email": null,
+        "cpf": null,
+        "password": null,
+        "groupId": null,
+        "roles": null
+      }
+      """
+    And I POST to '/v1/users'
+    Then I should receive the status code 422
+    And The response has 1 errors with code 905 containing 'name'
+    And The response has 1 errors with code 905 containing 'email'
+    And The response has 2 errors with code 905 containing 'cpf'
+    And The response has 1 errors with code 905 containing 'password'
+    And The response has 1 errors with code 905 containing 'groupId'
+    And The response has 1 errors with code 905 containing 'roles'
+
+  Scenario: Cannot create user with empty values
+    When I use the payload:
+      """
+      {
+        "name": "",
+        "email": "",
+        "cpf": "",
+        "password": "",
+        "groupId": "",
+        "roles": []
+      }
+      """
+    And I POST to '/v1/users'
+    Then I should receive the status code 422
+    And The response has 1 errors with code 905 containing 'name'
+    And The response has 1 errors with code 905 containing 'email'
+    And The response has 2 errors with code 905 containing 'cpf'
+    And The response has 1 errors with code 905 containing 'password'
+    And The response has 1 errors with code 905 containing 'groupId'
+    And The response has 1 errors with code 905 containing 'roles'
+
+  Scenario Outline: Cannot create user with invalid e-mail
+    When I use the payload:
       """
       {
         "name": "User 5",
-        "email": "user5@mail.com",
+        "email": "<email>",
         "cpf": "20454349076",
         "password": "1234",
         "groupId": 1,
         "roles": [1,2]
       }
       """
-    * The client calls user create endpoint
-    Then The client receives status code of 201
-    * The response has the created user info
-    * The user is created in the database as active
+    And I POST to '/v1/users'
+    Then I should receive the status code 422
+    And The response has 1 errors with code 905 containing 'email'
 
-  Scenario: Authenticated user can create a user
-    Given I am authenticated
-    When With content-type: 'application/json'
-    * With payload:
+    Examples:
+      | email         |
+      | user1mail.com |
+      | @mail.com     |
+      | user1@.com    |
+
+  Scenario Outline: Cannot create user with invalid cpf
+    When I use the payload:
       """
       {
         "name": "User 5",
         "email": "user5@mail.com",
-        "cpf": "20454349076",
+        "cpf": "<cpf>",
         "password": "1234",
         "groupId": 1,
         "roles": [1,2]
       }
       """
-    * The client calls user create endpoint
-    Then The client receives status code of 201
-    * The response has the created user info
-    * The user is created in the database as active
+    And I POST to '/v1/users'
+    Then I should receive the status code 422
+    And The response has an error with code 905 containing 'cpf'
+
+    Examples:
+      | cpf            |
+      | 922.574.650-40 |
+      | 9225746504     |
+      | 922574650401   |
+      | 92257465041    |
 
   Scenario: Cannot create user with same e-mail
-    When With content-type: 'application/json'
-    * With payload:
+    When I use the payload:
       """
       {
         "name": "User 5",
@@ -51,27 +100,41 @@ Feature: Service should provide endpoint to create new users
         "roles": [1,2]
       }
       """
-    * The client calls user create endpoint
-    Then The client receives status code of 422
-    * The response returns error code 904
+    And I POST to '/v1/users'
+    Then I should receive the status code 400
+    And The response contains error code 904
 
-  Scenario: Cannot create user with invalid data
-    When With content-type: 'application/json'
-    * With payload:
+  Scenario: Unauthenticated user can create a user
+    When I use the payload:
       """
       {
         "name": "User 5",
-        "email": "user1mail.com",
-        "cpf": "20454349072",
+        "email": "user5@mail.com",
+        "cpf": "20454349076",
         "password": "1234",
         "groupId": 1,
-        "roles": []
+        "roles": [1,2]
       }
       """
-    * The client calls user create endpoint
-    Then The client receives status code of 422
-    * The response returns error code 905
-    * The response has 3 errors
-    * The response contains error for the cpf field
-    * The response contains error for the email field
-    * The response contains error for the roles field
+    And I POST to '/v1/users'
+    Then I should receive the status code 201
+    And The response should have the created user info
+    And The created user should exist in the database as active
+
+  Scenario: Authenticated user can create a user
+    Given I am authenticated
+    When I use the payload:
+    """
+    {
+      "name": "User 5",
+      "email": "user5@mail.com",
+      "cpf": "20454349076",
+      "password": "1234",
+      "groupId": 1,
+      "roles": [1,2]
+    }
+    """
+    And I POST to '/v1/users'
+    Then I should receive the status code 201
+    And The response should have the created user info
+    And The created user should exist in the database as active

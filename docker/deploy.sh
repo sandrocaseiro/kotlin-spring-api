@@ -45,7 +45,7 @@ function help() {
         echo
         echo "commands:"
         echo "build      Rebuild a service's image"
-        echo "delete     Deletes the template containers"
+        echo "down       Deletes the template containers"
         echo "help       Show help information"
         echo "stop       Stops the template containes"
         echo "start      Starts the template containers"
@@ -74,9 +74,9 @@ function stop() {
     fi
 }
 
-function delete() {
+function down() {
     if [[ $HELP = 1 ]]; then
-        help "delete"
+        help "down"
     else
         docker-compose --project-name api-template down
     fi
@@ -122,8 +122,8 @@ if [ $COMMAND = "start" ]; then
 	start
 elif [ $COMMAND = "stop" ]; then
 	stop
-elif [ $COMMAND = "delete" ]; then
-	delete
+elif [ $COMMAND = "down" ]; then
+	down
 elif [ $COMMAND = "update" ]; then
 	update
 elif [ $COMMAND = "build" ]; then

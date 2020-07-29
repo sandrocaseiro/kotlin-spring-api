@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout
+                pattern="%d{ISO8601} %style{%highlight{%-5level}}{bright} [%style{%class{1.}}{cyan}]: %msg%n%style{%throwable}{bright,red}"
+            />
+        </Console>
+
+        <RollingFile name="RollingFile"
+                     fileName="/appserver/logs/api-template/api-template.log"
+                     filePattern="/appserver/logs/api-template/api-template.log.%d{yyyy-MM-dd}">
+            <PatternLayout>
+                <pattern>%d{MM-dd-yyyy HH:mm:ss} %-5level %class{1.} [%thread] project_id=%X{project_id} | user=%X{user}| action=%X{action} | activity=%X{activity} | src_ip=%X{src_ip} | applog=%X{applog} | message=%message%n</pattern>
+            </PatternLayout>
+            <Policies>
+                <!-- Daily -->
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+        </RollingFile>
+    </Appenders>
+
+    <Loggers>
+        <!-- LOG everything at INFO level -->
+        <Root level="info">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="RollingFile">
+                <ContextMapFilter onMatch="ACCEPT" onMismatch="DENY">
+                    <KeyValuePair key="save_to_file" value="true" />
+                </ContextMapFilter>
+            </AppenderRef>
+        </Root>
+    </Loggers>
+</Configuration>

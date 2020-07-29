@@ -6,7 +6,7 @@ COPY . .
 
 RUN gradle clean bootWarProd --rerun-tasks
 
-FROM jboss/wildfly:9.0.2.Final
+FROM jboss/wildfly:17.0.0.Final
 
 ARG wildflyUser
 ARG wildflyPassword

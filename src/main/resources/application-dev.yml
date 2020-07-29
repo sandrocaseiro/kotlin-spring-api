@@ -1,18 +1,16 @@
 cors:
   enabled: true
 
+endpoints:
+  api1:
+    base-url: http://localhost:8080/api/
+
 feign:
   client.config.default:
     loggerLevel: FULL
 
 logging:
-  level:
-    org:
-      hibernate:
-        type: TRACE
-      springframework:
-        web: DEBUG
-    com.sandrocaseiro.apitemplate.clients: DEBUG
+  config: classpath:logs/log4j2-spring.dev.xml
 
 server:
   servlet:
@@ -29,8 +27,8 @@ spring:
         default_schema: template
         format_sql: true
         type: TRACE
-    show-sql: true
-  liquibase:
-    change-log: classpath:changelog.xml
+  flyway:
     enabled: true
-    liquibase-schema: template
+    clean-disabled: true
+    schemas: TEMPLATE
+    locations: classpath:db/migration/common,classpath:db/migration/others

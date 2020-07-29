@@ -1,10 +1,13 @@
+feign:
+  client.config.default:
+    loggerLevel: basic
+
 logging:
-  level:
-    root: OFF
+  config: classpath:logs/log4j2-spring.dev.xml
 
 spring:
   datasource:
-    url: 'jdbc:h2:mem:testdb;MODE=Oracle;INIT=CREATE SCHEMA IF NOT EXISTS TEMPLATE\;SET SCHEMA_SEARCH_PATH TEMPLATE;'
+    url: "jdbc:h2:mem:testdb;MODE=Oracle;INIT=CREATE SCHEMA IF NOT EXISTS TEMPLATE\\;SET SCHEMA_SEARCH_PATH TEMPLATE;"
     driver-class-name: org.h2.Driver
     username: sa
     password: sa
@@ -14,10 +17,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
         default_schema: template
-        enable_lazy_load_no_trans: true
-  liquibase:
-    change-log: classpath:changelog-test.xml
+  flyway:
     enabled: true
-    liquibase-schema: template
+    clean-disabled: false
+    schemas: TEMPLATE
+    locations: classpath:db/migration/common,classpath:db/migration/test
   main:
     banner-mode: OFF

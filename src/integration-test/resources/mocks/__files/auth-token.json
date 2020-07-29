@@ -1,0 +1,7 @@
+{
+    "type": "bearer",
+    "expires_in": 18000000,
+    "refresh_expires_in": 18000000000000,
+    "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMUBtYWlsLmNvbSIsImV4cCI6MTU5NDc0OTc3MiwidXNlcklkIjoxLCJuYW1lIjoiVXNlciAxIiwiZ3JvdXBJZCI6MSwicm9sZXMiOiIxLDIifQ.65F86kld_H-PmBsmNbZN0oPaDsikg_Z5vXCWJhe_F3LeTd72MaDD48zMtMsmCLQj",
+    "refresh_token": "eyJ0eXAiOiJKV1QiLCJyZWZyZXNoIjp0cnVlLCJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ1c2VyMUBtYWlsLmNvbSIsImV4cCI6MTk1OTQ3MjgxNzIsInVzZXJJZCI6MSwibmFtZSI6IlVzZXIgMSIsImdyb3VwSWQiOjEsInJvbGVzIjoiMSwyIn0.Hz6KS72rc19wGVfxqQYYiU86Oepiz7vZ2hA-13hgE-3K3MrJtFarBRkTH_0hFfLD"
+}

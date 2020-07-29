@@ -1,0 +1,16 @@
+{
+    "errors": [
+        {
+            "code": 1,
+            "type": "S",
+            "description": "Success"
+        }
+    ],
+    "data": {
+        "id": 1,
+        "name": "User 1",
+        "email": "user1@mail.com",
+        "group": "Group 1"
+    },
+    "isSuccess": true
+}

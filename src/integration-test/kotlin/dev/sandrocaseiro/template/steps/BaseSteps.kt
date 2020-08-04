@@ -12,16 +12,19 @@ import org.flywaydb.core.Flyway
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.boot.web.server.LocalServerPort
+import org.springframework.test.context.ActiveProfiles
 
 @CucumberContextConfiguration
 @SpringBootTest(
     webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+    properties = ["isTest=true"],
     classes = [
         ApiApplication::class,
         MockServer::class,
         TestState::class
     ]
 )
+@ActiveProfiles("test")
 abstract class BaseSteps {
     @LocalServerPort
     var port: Int = 0

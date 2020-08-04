@@ -28,9 +28,9 @@ feign:
 
 info:
   app:
-    name: $appName
-    description: $appDescription
-    version: $appVersion
+    name: ${name}
+    description: ${description}
+    version: ${version}
     id: ID-99999
 
 jwt:
@@ -98,7 +98,7 @@ spring:
     ansi:
       enabled: ALWAYS
   profiles:
-    active: $activeProfile
+    active: ${env}
   resources:
     add-mappings: false
   servlet:

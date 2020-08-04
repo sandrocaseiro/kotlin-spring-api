@@ -8,4 +8,4 @@ ${AnsiBackground.BRIGHT_YELLOW}${AnsiColor.RED}\__ \  | '_ \) | '_|  | | | ' \))
 ${AnsiBackground.BRIGHT_YELLOW}${AnsiColor.RED}|___/  | .__/  |_|    |_| |_||_|  \__, |     /_/ \_\  |_|    |___|      |_|    \___|  |_|_|_|  | .__/  |_|  \__,_|  \__|  \___| ${AnsiBackground.DEFAULT}
 ${AnsiBackground.BRIGHT_YELLOW}${AnsiColor.RED}       |_|                        |___/                                                        |_|                              ${AnsiBackground.DEFAULT}
 ${AnsiBackground.BRIGHT_GREEN}${AnsiColor.BLACK}:: Spring Boot ${spring-boot.formatted-version} ::${AnsiBackground.DEFAULT}
-${AnsiBackground.BRIGHT_GREEN}${AnsiColor.BLACK}:: ${application.title} ${application.formatted-version} ::${AnsiBackground.DEFAULT}
+${AnsiBackground.BRIGHT_GREEN}${AnsiColor.BLACK}:: ${info.app.name} (v${info.app.version}) ::${AnsiBackground.DEFAULT}

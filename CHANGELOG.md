@@ -1,3 +1,8 @@
+## 2.0.1
+
+* Run and debug with test profile, using API Stubs and pre-populated H2 database
+* Gradle `build.gradle` updates
+
 ## 2.0.0
 
 * Updated dependencies versions

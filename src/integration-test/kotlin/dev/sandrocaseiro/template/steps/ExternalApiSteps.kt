@@ -26,44 +26,46 @@ class ExternalApiSteps: BaseSteps(), En {
         )
     }
 
-    fun stubIsWorking() {
-        stubFor(
-            post(urlPathMatching("/api/.*/token$"))
-                .atPriority(1)
-                .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_FORM_URLENCODED_VALUE))
-                .willReturn(
-                    aResponse()
-                        .withStatus(HttpStatus.OK.value())
-                        .withBodyFile("/auth-token.json")
-                )
-        )
+    companion object {
+        fun stubIsWorking() {
+            stubFor(
+                post(urlPathMatching("/api/.*/token$"))
+                    .atPriority(1)
+                    .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_FORM_URLENCODED_VALUE))
+                    .willReturn(
+                        aResponse()
+                            .withStatus(HttpStatus.OK.value())
+                            .withBodyFile("/auth-token.json")
+                    )
+            )
 
-        stubFor(
-            patch(urlPathMatching("/api/.*/1/balance$"))
-                .atPriority(1)
-                .willReturn(
-                    aResponse()
-                        .withStatus(HttpStatus.NO_CONTENT.value())
-                )
-        )
+            stubFor(
+                patch(urlPathMatching("/api/.*/1/balance$"))
+                    .atPriority(1)
+                    .willReturn(
+                        aResponse()
+                            .withStatus(HttpStatus.NO_CONTENT.value())
+                    )
+            )
 
-        stubFor(
-            get(urlPathMatching("/api/.*/[1-4]$"))
-                .atPriority(1)
-                .willReturn(
-                    aResponse()
-                        .withStatus(HttpStatus.OK.value())
-                        .withBodyFile("/get-user.json")
-                )
-        )
+            stubFor(
+                get(urlPathMatching("/api/.*/[1-4]$"))
+                    .atPriority(1)
+                    .willReturn(
+                        aResponse()
+                            .withStatus(HttpStatus.OK.value())
+                            .withBodyFile("/get-user.json")
+                    )
+            )
 
-        stubFor(
-            any(urlPathMatching("/api/.*"))
-                .atPriority(99)
-                .willReturn(
-                    aResponse()
-                        .withStatus(HttpStatus.NOT_FOUND.value())
-                )
-        )
+            stubFor(
+                any(urlPathMatching("/api/.*"))
+                    .atPriority(99)
+                    .willReturn(
+                        aResponse()
+                            .withStatus(HttpStatus.NOT_FOUND.value())
+                    )
+            )
+        }
     }
 }

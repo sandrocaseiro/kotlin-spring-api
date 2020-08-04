@@ -1,23 +1,23 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "dev.sandrocaseiro"
-version = "2.0.0"
+version = "2.0.1"
 description = "Kotlin Spring Template API"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
-val beanio_version = "2.1.0"
-val cucumber_version = "6.2.2"
-val dependencyCheck_version = "5.3.2"
+val beanioVersion = "2.1.0"
+val cucumberVersion = "6.2.2"
+val dependencyCheckVersion = "5.3.2"
 //Needed for RestAssured. Remove as soon Spring BOM is updated
-val groovy_version = "3.0.2"
-val guava_version = "28.2-jre"
-val jacoco_version = "0.8.5"
-val jjwt_version = "0.11.2"
-val restAssured_version = "4.3.1"
+val groovyVersion = "3.0.2"
+val guavaVersion = "28.2-jre"
+val jacocoVersion = "0.8.5"
+val jjwtVersion = "0.11.2"
+val restAssuredVersion = "4.3.1"
 // If you need to set Feign Headers dynamically, use Hoxton.SR4
-val springCloud_version = "Hoxton.SR6"
-val springDocOpenApi_version = "1.4.3"
-val wiremock_version = "2.27.0"
+val springCloudVersion = "Hoxton.SR6"
+val springDocOpenApiVersion = "1.4.3"
+val wiremockVersion = "2.27.0"
 
 plugins {
     id("org.springframework.boot") version "2.3.2.RELEASE"
@@ -47,20 +47,7 @@ sourceSets {
     }
 }
 
-//val developmentOnly: Configuration by configurations.creating
 configurations {
-//    val testCompile by getting
-//    val testRuntime by getting
-//    val integrationTestCompile by getting {
-//        extendsFrom(testCompile)
-//    }
-//    val integrationTestRuntime by getting {
-//        extendsFrom(testRuntime)
-//    }
-////    runtimeClasspath {
-////        extendsFrom(developmentOnly.get())
-////    }
-
     all {
         exclude("org.springframework.boot", "spring-boot-starter-logging")
     }
@@ -72,7 +59,7 @@ repositories {
 
 dependencyManagement {
     imports {
-        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${springCloud_version}")
+        mavenBom("org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}")
     }
 }
 
@@ -101,36 +88,36 @@ dependencies {
     implementation("io.github.openfeign", "feign-jackson")
     implementation("io.github.openfeign", "feign-okhttp")
 
-    implementation("io.jsonwebtoken", "jjwt-api", jjwt_version)
-    implementation("io.jsonwebtoken", "jjwt-impl", jjwt_version)
-    implementation("io.jsonwebtoken", "jjwt-jackson", jjwt_version)
+    implementation("io.jsonwebtoken", "jjwt-api", jjwtVersion)
+    implementation("io.jsonwebtoken", "jjwt-impl", jjwtVersion)
+    implementation("io.jsonwebtoken", "jjwt-jackson", jjwtVersion)
 
-    implementation("org.beanio", "beanio", beanio_version)
+    implementation("org.beanio", "beanio", beanioVersion)
 
     implementation("org.flywaydb:flyway-core")
     runtimeOnly("com.oracle.database.jdbc", "ojdbc8")
 
-    implementation("com.google.guava", "guava", guava_version)
+    implementation("com.google.guava", "guava", guavaVersion)
 
-    implementation("org.springdoc", "springdoc-openapi-ui", springDocOpenApi_version)
-    implementation("org.springdoc", "springdoc-openapi-security", springDocOpenApi_version)
-    implementation("org.springdoc", "springdoc-openapi-kotlin", springDocOpenApi_version)
+    implementation("org.springdoc", "springdoc-openapi-ui", springDocOpenApiVersion)
+    implementation("org.springdoc", "springdoc-openapi-security", springDocOpenApiVersion)
+    implementation("org.springdoc", "springdoc-openapi-kotlin", springDocOpenApiVersion)
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     testImplementation("com.h2database", "h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("io.cucumber", "cucumber-java8", cucumber_version)
-    testImplementation("io.cucumber", "cucumber-junit", cucumber_version)
-    testImplementation("io.cucumber", "cucumber-spring", cucumber_version)
-    testImplementation("io.rest-assured", "rest-assured-all", restAssured_version)
-    testImplementation("io.rest-assured", "rest-assured", restAssured_version)
-    testImplementation("io.rest-assured", "kotlin-extensions", restAssured_version) {
+    testImplementation("io.cucumber", "cucumber-java8", cucumberVersion)
+    testImplementation("io.cucumber", "cucumber-junit", cucumberVersion)
+    testImplementation("io.cucumber", "cucumber-spring", cucumberVersion)
+    testImplementation("io.rest-assured", "rest-assured-all", restAssuredVersion)
+    testImplementation("io.rest-assured", "rest-assured", restAssuredVersion)
+    testImplementation("io.rest-assured", "kotlin-extensions", restAssuredVersion) {
         exclude("io.rest-assured", "rest-assured")
     }
-    testImplementation("org.codehaus.groovy", "groovy", groovy_version)
-    testImplementation("org.codehaus.groovy", "groovy-xml", groovy_version)
-    testImplementation("com.github.tomakehurst", "wiremock-jre8", wiremock_version)
+    testImplementation("org.codehaus.groovy", "groovy", groovyVersion)
+    testImplementation("org.codehaus.groovy", "groovy-xml", groovyVersion)
+    testImplementation("com.github.tomakehurst", "wiremock-jre8", wiremockVersion)
 }
 
 dependencyCheck {
@@ -151,7 +138,7 @@ tasks.withType<KotlinCompile> {
     }
 }
 
-listOf("dev", "prod").forEach { env ->
+listOf("dev", "test", "prod").forEach { env ->
     tasks.register("bootJar${env.capitalize()}") {
         ext["env"] = env
 
@@ -163,27 +150,26 @@ listOf("dev", "prod").forEach { env ->
 
         finalizedBy(tasks.bootWar)
     }
+
+    tasks.register("bootRun${env.capitalize()}") {
+        ext["env"] = env
+
+        finalizedBy(tasks.bootRun)
+    }
+}
+
+tasks.bootRun {
+    if (ext["env"] == "test")
+        classpath += sourceSets["integrationTest"].runtimeClasspath
 }
 
 tasks.processResources {
-    finalizedBy(tasks.named("yaml"))
+    filesMatching("application.yml") {
+        expand(project.properties)
+    }
 }
 
 tasks.register<Test>("integration-test") {
     testClassesDirs = sourceSets["integrationTest"].output.classesDirs
     classpath = sourceSets["integrationTest"].runtimeClasspath
-}
-
-tasks.register<Copy>("yaml") {
-    from("src/main/resources") {
-        include("application.yml")
-    }
-    into("$buildDir/resources/main")
-
-    expand(
-        "activeProfile" to ext["env"],
-        "appName" to project.name,
-        "appDescription" to project.description,
-        "appVersion" to project.version
-    )
 }

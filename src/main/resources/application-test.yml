@@ -1,6 +1,6 @@
-feign:
-  client.config.default:
-    loggerLevel: basic
+endpoints:
+  api1:
+    base-url: http://localhost:8089/api
 
 logging:
   config: classpath:logs/log4j2-spring.dev.xml
@@ -12,15 +12,16 @@ spring:
     username: sa
     password: sa
   h2.console.enabled: true
-  jpa:
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.H2Dialect
-        default_schema: template
   flyway:
     enabled: true
     clean-disabled: false
     schemas: TEMPLATE
     locations: classpath:db/migration/common,classpath:db/migration/test
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        default_schema: template
+        enable_lazy_load_no_trans: true
   main:
     banner-mode: OFF

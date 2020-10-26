@@ -65,10 +65,10 @@ server:
   port: 8080
 
 spring:
-  datasource:
-    driver-class-name: oracle.jdbc.OracleDriver
   application:
     name: apitemplate
+  datasource:
+    driver-class-name: oracle.jdbc.OracleDriver
   http:
     encoding:
       charset: UTF-8

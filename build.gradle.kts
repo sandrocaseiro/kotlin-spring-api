@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "dev.sandrocaseiro"
-version = "2.0.1"
+version = "2.0.2"
 description = "Kotlin Spring Template API"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
@@ -10,7 +10,7 @@ val cucumberVersion = "6.2.2"
 val dependencyCheckVersion = "5.3.2"
 //Needed for RestAssured. Remove as soon Spring BOM is updated
 val groovyVersion = "3.0.2"
-val guavaVersion = "28.2-jre"
+val guavaVersion = "29.0-jre"
 val jacocoVersion = "0.8.5"
 val jjwtVersion = "0.11.2"
 val restAssuredVersion = "4.3.1"
@@ -20,8 +20,8 @@ val springDocOpenApiVersion = "1.4.3"
 val wiremockVersion = "2.27.0"
 
 plugins {
-    id("org.springframework.boot") version "2.3.2.RELEASE"
-    id("io.spring.dependency-management") version "1.0.9.RELEASE"
+    id("org.springframework.boot") version "2.3.4.RELEASE"
+    id("io.spring.dependency-management") version "1.0.10.RELEASE"
     id("org.owasp.dependencycheck") version "5.3.2"
     id("org.sonarqube") version "3.0"
     kotlin("jvm") version "1.3.72"
@@ -129,6 +129,20 @@ dependencyCheck {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+
+    configure<JacocoTaskExtension> {
+        excludes = listOf(
+            "dev/sandrocaseiro/template/configs/**/*",
+            "dev/sandrocaseiro/template/clients/configs/**/*",
+            "dev/sandrocaseiro/template/models/**/*",
+            "dev/sandrocaseiro/template/properties/**/*"
+        )
+    }
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
 }
 
 tasks.withType<KotlinCompile> {
@@ -172,4 +186,8 @@ tasks.processResources {
 tasks.register<Test>("integration-test") {
     testClassesDirs = sourceSets["integrationTest"].output.classesDirs
     classpath = sourceSets["integrationTest"].runtimeClasspath
+}
+
+jacoco {
+    toolVersion = jacocoVersion
 }

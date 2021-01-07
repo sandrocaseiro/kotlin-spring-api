@@ -50,6 +50,7 @@ class SecurityConfig(
                 ).permitAll()
                 .antMatchers("/v*/token/**").anonymous()
                 .antMatchers(HttpMethod.POST, "/v?/users").permitAll()
+                .antMatchers(HttpMethod.GET, "/v?/roles", "/v?/groups").permitAll()
                 .antMatchers("/v1/**").authenticated()
                 .antMatchers("/v2/**").authenticated()
                 .anyRequest().denyAll()

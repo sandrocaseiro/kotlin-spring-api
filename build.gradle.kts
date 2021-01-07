@@ -101,7 +101,7 @@ dependencies {
 
     implementation("org.springdoc", "springdoc-openapi-ui", springDocOpenApiVersion)
     implementation("org.springdoc", "springdoc-openapi-security", springDocOpenApiVersion)
-    implementation("org.springdoc", "springdoc-openapi-kotlin", springDocOpenApiVersion)
+    //implementation("org.springdoc", "springdoc-openapi-kotlin", springDocOpenApiVersion)
 
     developmentOnly("org.springframework.boot:spring-boot-devtools")
 

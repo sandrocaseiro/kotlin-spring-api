@@ -1,6 +1,5 @@
 package dev.sandrocaseiro.template.services
 
-import dev.sandrocaseiro.template.clients.UserClient
 import dev.sandrocaseiro.template.exceptions.AppException
 import dev.sandrocaseiro.template.models.domain.EGroup
 import dev.sandrocaseiro.template.models.domain.ERole
@@ -30,7 +29,6 @@ import java.util.*
 class UserServiceTest {
     @Mock private lateinit var userRepository: UserRepository
     @Mock private lateinit var authInfo: IAuthenticationInfo
-    @Mock private lateinit var userApiClient: UserClient
     @InjectMocks private lateinit var userService: UserService
 
     companion object {

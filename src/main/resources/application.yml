@@ -6,10 +6,9 @@ cors:
   exposed-headers: Content-Disposition, Content-Length, Content-Type
 
 endpoints:
-  api1:
-    base-url: http://localhost:8080/
-    password: 1234
-    username: user1@mail.com
+  cep:
+    base-url: https://viacep.com.br/ws/
+    apiKey: 1234
 
 feign:
   #The next attributes are handled manually, as there is a bug when setting timeouts and disabling follow redirects

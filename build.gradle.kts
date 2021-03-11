@@ -1,12 +1,12 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 group = "dev.sandrocaseiro"
-version = "2.0.2"
+version = "2.1.0"
 description = "Kotlin Spring Template API"
 java.sourceCompatibility = JavaVersion.VERSION_1_8
 
 val beanioVersion = "2.1.0"
-val cucumberVersion = "6.2.2"
+val cucumberVersion = "6.8.1"
 val dependencyCheckVersion = "5.3.2"
 //Needed for RestAssured. Remove as soon Spring BOM is updated
 val groovyVersion = "3.0.2"
@@ -15,19 +15,17 @@ val jacocoVersion = "0.8.5"
 val jjwtVersion = "0.11.2"
 val restAssuredVersion = "4.3.1"
 // If you need to set Feign Headers dynamically, use Hoxton.SR4
-val springCloudVersion = "Hoxton.SR6"
+val springCloudVersion = "2020.0.1"
 val springDocOpenApiVersion = "1.4.3"
 val wiremockVersion = "2.27.0"
 
 plugins {
-    id("org.springframework.boot") version "2.3.4.RELEASE"
-    id("io.spring.dependency-management") version "1.0.10.RELEASE"
-    id("org.owasp.dependencycheck") version "5.3.2"
-    id("org.sonarqube") version "3.0"
-    kotlin("jvm") version "1.3.72"
-    kotlin("plugin.spring") version "1.3.72"
+    id("org.springframework.boot") version "2.4.3"
+    id("io.spring.dependency-management") version "1.0.11.RELEASE"
+    kotlin("jvm") version "1.4.30"
+    kotlin("plugin.spring") version "1.4.30"
     war
-    jacoco
+    //jacoco
 }
 
 project.ext {
@@ -101,9 +99,6 @@ dependencies {
 
     implementation("org.springdoc", "springdoc-openapi-ui", springDocOpenApiVersion)
     implementation("org.springdoc", "springdoc-openapi-security", springDocOpenApiVersion)
-    //implementation("org.springdoc", "springdoc-openapi-kotlin", springDocOpenApiVersion)
-
-    developmentOnly("org.springframework.boot:spring-boot-devtools")
 
     testImplementation("com.h2database", "h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
@@ -120,30 +115,23 @@ dependencies {
     testImplementation("com.github.tomakehurst", "wiremock-jre8", wiremockVersion)
 }
 
-dependencyCheck {
-    format = org.owasp.dependencycheck.reporting.ReportGenerator.Format.ALL
-    failOnError = false
-    failBuildOnCVSS = 11F
-    junitFailOnCVSS = 11F
-}
-
 tasks.withType<Test> {
     useJUnitPlatform()
-    finalizedBy(tasks.jacocoTestReport)
+    //finalizedBy(tasks.jacocoTestReport)
 
-    configure<JacocoTaskExtension> {
-        excludes = listOf(
-            "dev/sandrocaseiro/template/configs/**/*",
-            "dev/sandrocaseiro/template/clients/configs/**/*",
-            "dev/sandrocaseiro/template/models/**/*",
-            "dev/sandrocaseiro/template/properties/**/*"
-        )
-    }
+//    configure<JacocoTaskExtension> {
+//        excludes = listOf(
+//            "dev/sandrocaseiro/template/configs/**/*",
+//            "dev/sandrocaseiro/template/clients/configs/**/*",
+//            "dev/sandrocaseiro/template/models/**/*",
+//            "dev/sandrocaseiro/template/properties/**/*"
+//        )
+//    }
 }
 
-tasks.jacocoTestReport {
-    dependsOn(tasks.test)
-}
+//tasks.jacocoTestReport {
+//    dependsOn(tasks.test)
+//}
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
@@ -188,6 +176,6 @@ tasks.register<Test>("integration-test") {
     classpath = sourceSets["integrationTest"].runtimeClasspath
 }
 
-jacoco {
-    toolVersion = jacocoVersion
-}
+//jacoco {
+//    toolVersion = jacocoVersion
+//}

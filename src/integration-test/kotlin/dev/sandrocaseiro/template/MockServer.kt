@@ -28,7 +28,7 @@ class MockServer {
 
     @PostConstruct
     fun init() {
-        if (!"true".equals(env.getProperty("isTest"))) {
+        if ("true" != env.getProperty("isTest")) {
             ExternalApiSteps.stubIsWorking()
         }
     }

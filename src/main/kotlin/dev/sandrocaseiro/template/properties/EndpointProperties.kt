@@ -6,11 +6,10 @@ import org.springframework.boot.context.properties.ConstructorBinding
 @ConstructorBinding
 @ConfigurationProperties("endpoints")
 data class EndpointProperties(
-    val api1: API
+    val cep: CepApi
 ) {
-    data class API(
+    data class CepApi(
         val baseUrl: String,
-        val username: String,
-        val password: String
+        val apiKey: String
     )
 }

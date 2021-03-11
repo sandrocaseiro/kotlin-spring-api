@@ -84,24 +84,6 @@ class UserController (
         userService.updateBalance(id, dto.balance!!)
     }
 
-    @PatchMapping("/v2/users/{id}/balance")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PreAuthorize("isGroup(1)")
-    @Operation(summary = "Update User's balance", description = "Update an user's balance", responses = [
-        ApiResponse(responseCode = "204", description = "Updated"),
-        ApiResponse(responseCode = "404", description = "Not found", content = [Content(schema = Schema(implementation = DResponse::class))]),
-        ApiResponse(responseCode = "422", description = "Unprocessable Entity", content = [Content(schema = Schema(implementation = DResponse::class))]),
-        ApiResponse(responseCode = "500", description = "Server error", content = [Content(schema = Schema(implementation = DResponse::class))])
-    ])
-    fun updateUserBalanceApi(@Parameter(description = "User's id", `in` = ParameterIn.PATH, required = true, example = "1") @PathVariable id: Int,
-                             @RequestBody @Valid dto: DUserBalanceUpdateReq,
-                             bindingErrors: Errors) {
-        if (bindingErrors.hasErrors())
-            throw BindValidationException(bindingErrors)
-
-        userService.updateBalanceApi(id, dto.balance!!)
-    }
-
     @DeleteMapping("/v1/users/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Operation(summary = "Delete user", description = "Delete an user", responses = [
@@ -165,19 +147,6 @@ class UserController (
         val user: JUserGroup = userService.findById(id)
 
         return user.toGroupDto()
-    }
-
-    @GetMapping("/v2/users/{id}")
-    @PreAuthorize("canAccessUser(#id)")
-    @Operation(summary = "Get user", description = "Get user by Id", responses = [
-        ApiResponse(responseCode = "200", description = "OK", content = [Content(schema = Schema(implementation = DResponseDUserGroupResp::class))]),
-        ApiResponse(responseCode = "404", description = "Not found", content = [Content(schema = Schema(implementation = DResponse::class))]),
-        ApiResponse(responseCode = "500", description = "Server error", content = [Content(schema = Schema(implementation = DResponse::class))])
-    ])
-    fun findUserApi(@Parameter(description = "User's id", `in` = ParameterIn.PATH, required = true, example = "1") @PathVariable id: Int): DUserResp {
-        val user: SUser = userService.findByIdApi(id)
-
-        return user.toUserResp()
     }
 
     @GetMapping("/v1/users/group/{id}")

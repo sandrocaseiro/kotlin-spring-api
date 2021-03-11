@@ -1,6 +1,6 @@
 endpoints:
-  api1:
-    base-url: http://localhost:8089/api
+  cep:
+    base-url: http://localhost:8089/cep
 
 logging:
   config: classpath:logs/log4j2-spring.dev.xml

@@ -10,14 +10,14 @@ class ExternalApiSteps: BaseSteps(), En {
     init {
         Before { _ -> mockServer.reset() }
 
-        Given("External API is not working") { stubNotWorking() }
+        Given("CEP API is not working") { stubNotWorking() }
 
-        Given("External API is working") { stubIsWorking() }
+        Given("CEP API is working") { stubIsWorking() }
     }
 
     fun stubNotWorking() {
         stubFor(
-            any(urlPathMatching("/api/.*"))
+            any(urlPathMatching("/cep/.*"))
                 .willReturn(
                     aResponse()
                         .withStatus(HttpStatus.INTERNAL_SERVER_ERROR.value())
@@ -29,37 +29,28 @@ class ExternalApiSteps: BaseSteps(), En {
     companion object {
         fun stubIsWorking() {
             stubFor(
-                post(urlPathMatching("/api/.*/token$"))
-                    .atPriority(1)
-                    .withHeader(HttpHeaders.CONTENT_TYPE, containing(MediaType.APPLICATION_FORM_URLENCODED_VALUE))
-                    .willReturn(
-                        aResponse()
-                            .withStatus(HttpStatus.OK.value())
-                            .withBodyFile("/auth-token.json")
-                    )
-            )
-
-            stubFor(
-                patch(urlPathMatching("/api/.*/1/balance$"))
-                    .atPriority(1)
-                    .willReturn(
-                        aResponse()
-                            .withStatus(HttpStatus.NO_CONTENT.value())
-                    )
-            )
-
-            stubFor(
-                get(urlPathMatching("/api/.*/[1-4]$"))
+                get(urlPathMatching("/cep/03310000/.*"))
                     .atPriority(1)
                     .willReturn(
                         aResponse()
                             .withStatus(HttpStatus.OK.value())
-                            .withBodyFile("/get-user.json")
+                            .withBodyFile("/cep.json")
+                    )
+            )
+
+
+            stubFor(
+                get(urlPathMatching("/cep/99999999/.*"))
+                    .atPriority(1)
+                    .willReturn(
+                        aResponse()
+                            .withStatus(HttpStatus.OK.value())
+                            .withBodyFile("/cep-not-found.json")
                     )
             )
 
             stubFor(
-                any(urlPathMatching("/api/.*"))
+                any(urlPathMatching("/cep/.*"))
                     .atPriority(99)
                     .willReturn(
                         aResponse()
